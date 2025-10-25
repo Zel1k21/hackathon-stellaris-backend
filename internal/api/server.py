@@ -1,27 +1,24 @@
-from flask import Flask, g
-import psycopg2
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from flask import Flask
+from internal.api.database import get_db_connection
+from internal.app.handler.user import register_user_routes
 
 
 def get_db():
-    if "db" not in g:
-        g.db = psycopg2.connect(
-            host=os.getenv("DB_HOST"),
-            database=os.getenv("DB_NAME"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASS"),
-        )
-    return g.db
+    """Get database connection for repository use"""
+    return get_db_connection()
 
 
-app = Flask(__name__)
+def run():
+    """Run the Flask application"""
+    app = Flask(__name__)
+
+    # Register all routes
+    register_user_routes(app)
+
+    # Start the Flask development server
+    print("Starting Flask server on http://localhost:5000")
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
 
-@app.teardown_appcontext
-def close_db(e=None):
-    db = g.pop("db", None)
-    if db is not None:
-        db.close()
+if __name__ == "__main__":
+    run()
