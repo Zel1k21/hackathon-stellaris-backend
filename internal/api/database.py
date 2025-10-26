@@ -32,3 +32,8 @@ def get_db_connection():
     except psycopg2.Error as e:
         print(f"Error connecting to database: {e}")
         raise
+
+
+def get_db():
+    """Get database connection for repository use"""
+    return get_db_connection()

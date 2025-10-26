@@ -9,7 +9,7 @@ from internal.app.auth.jwt_utils import (
 
 
 def register_user_routes(app: Flask):
-    @app.route("/users/register", methods=["POST"])
+    @app.route("/api/users/register", methods=["POST"])
     def create_user():
         try:
             # Get JSON data from request
@@ -50,7 +50,7 @@ def register_user_routes(app: Flask):
             # Handle any unexpected errors
             return jsonify({"error": f"Failed to create user: {str(e)}"}), 500
 
-    @app.route("/users/login", methods=["POST"])
+    @app.route("/api/users/login", methods=["POST"])
     def login_user():
         try:
             # Get JSON data from request
@@ -104,7 +104,7 @@ def register_user_routes(app: Flask):
             # Handle any unexpected errors
             return jsonify({"error": f"Failed to login user: {str(e)}"}), 500
 
-    @app.route("/users/refresh", methods=["POST"])
+    @app.route("/api/users/refresh", methods=["POST"])
     def refresh_token():
         try:
             # Get JSON data from request
@@ -146,7 +146,7 @@ def register_user_routes(app: Flask):
         except Exception as e:
             return jsonify({"error": f"Failed to refresh token: {str(e)}"}), 500
 
-    @app.route("/users/me", methods=["GET"])
+    @app.route("/api/users/me", methods=["GET"])
     @token_required
     def get_current_user():
         try:

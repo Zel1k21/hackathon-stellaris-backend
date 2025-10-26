@@ -1,4 +1,4 @@
-from internal.api.server import get_db
+from internal.api.database import get_db
 from internal.models.spaceBody import SpaceBody
 
 connection = get_db()
