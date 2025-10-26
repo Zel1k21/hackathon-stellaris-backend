@@ -23,13 +23,15 @@ def register_space_body_routes(app: Flask):
             comet = None
             if hasattr(result, "get"):
                 comet = {
+                    "id": result.get("id"),
                     "name": result.get("name"),
                 }
             else:
                 # tuple/list-like: assume (id, name, is_visible)
                 try:
                     comet = {
-                        "name": result[0],
+                        "id": result[0],
+                        "name": result[1],
                     }
                 except Exception:
                     # fallback: return raw row
@@ -68,7 +70,7 @@ def register_space_body_routes(app: Flask):
                         except Exception:
                             observations.append(row)
 
-            return jsonify({"comet": comet, "observations": observations}), 200
+            return jsonify({comet, observations}), 200
 
         except Exception as e:
             return jsonify({"error": f"Failed to get comet info: {str(e)}"}), 500
