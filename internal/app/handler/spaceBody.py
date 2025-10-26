@@ -39,7 +39,8 @@ def register_space_body_routes(app: Flask):
 
             # Fetch related observations for this comet (space body)
             try:
-                obs_rows = ObservationRepository.GetObservationsBySpaceBodyID(body_id)
+                obs_rows = ObservationRepository.GetObservationsBySpaceBody(body_id)
+
             except Exception:
                 obs_rows = None
 
