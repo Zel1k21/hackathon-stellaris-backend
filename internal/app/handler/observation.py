@@ -119,8 +119,6 @@ def register_observation_route(app: Flask):
 
                 comets_data.append(comet_data)
 
-                comets_data.append(comet_data)
-
             return jsonify(comets_data), 200
 
         except Exception as e:
