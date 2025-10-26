@@ -1,8 +1,7 @@
 import os
 from flask import Flask
 from internal.api.database import get_db_connection
-from internal.app.handler.user import register_user_routes
-from internal.app.handler.observation import register_observation_route
+from internal.app.handler.handler import register_routes
 
 
 def get_db():
@@ -15,8 +14,7 @@ def run():
     app = Flask(__name__)
 
     # Register all routes
-    register_user_routes(app)
-    register_observation_route(app)
+    register_routes(app)
 
     # Start the Flask development server
     port = os.getenv("API_PORT")

@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from internal.app.repository.spaceBody import SpaceBodyRepository
 from internal.app.repository.observation import ObservationRepository
 
 
-def space_body_info(app: Flask):
+def register_space_body_routes(app: Flask):
     @app.route("/api/comets/<int:body_id>", methods=["GET"])
     def get_space_body(body_id: int):
         """Return full information about a comet (space body) by id.
