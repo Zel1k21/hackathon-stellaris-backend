@@ -1,7 +1,7 @@
-from internal.api.database import get_db
+from internal.api.database import get_db_connection
 from internal.models.spaceBody import SpaceBody
 
-connection = get_db()
+connection = get_db_connection()
 
 
 class SpaceBodyRepository:
