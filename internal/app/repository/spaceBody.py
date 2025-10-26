@@ -70,3 +70,23 @@ class SpaceBodyRepository:
         finally:
             cursor.close()
             conn.close()
+
+    @staticmethod
+    def GetAllSpaceBodies():
+        """Get all space bodies from database"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT * FROM spaceBodies ORDER BY name")
+            results = cursor.fetchall()
+            space_bodies = []
+            for result in results:
+                space_bodies.append(
+                    {"id": result[0], "name": result[1], "is_visible": result[2]}
+                )
+            return space_bodies
+        except Exception as e:
+            raise e
+        finally:
+            cursor.close()
+            conn.close()
