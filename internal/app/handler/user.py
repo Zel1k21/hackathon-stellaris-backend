@@ -9,7 +9,7 @@ from internal.app.auth.jwt_utils import (
 
 
 def register_user_routes(app: Flask):
-    @app.route("/api/users/register", methods=["POST"])
+    @app.route("/users/register", methods=["POST"])
     def create_user():
         try:
             # Get JSON data from request
@@ -19,7 +19,7 @@ def register_user_routes(app: Flask):
             if not data:
                 return jsonify({"error": "No JSON data provided"}), 400
 
-            required_fields = ["username", "password"]
+            required_fields = ["name", "password"]
             for field in required_fields:
                 if field not in data:
                     return jsonify({"error": f"Missing required field: {field}"}), 400
@@ -27,7 +27,7 @@ def register_user_routes(app: Flask):
             # Create User object
             user = User(
                 id=None,
-                name=data["username"],
+                name=data["name"],
                 password=data["password"],
                 is_moderator=data.get("is_moderator", False),
             )
@@ -50,7 +50,7 @@ def register_user_routes(app: Flask):
             # Handle any unexpected errors
             return jsonify({"error": f"Failed to create user: {str(e)}"}), 500
 
-    @app.route("/api/users/login", methods=["POST"])
+    @app.route("/users/login", methods=["POST"])
     def login_user():
         try:
             # Get JSON data from request
@@ -60,16 +60,14 @@ def register_user_routes(app: Flask):
             if not data:
                 return jsonify({"error": "No JSON data provided"}), 400
 
-            required_fields = ["username", "password"]
+            required_fields = ["name", "password"]
             for field in required_fields:
                 if field not in data:
                     return jsonify({"error": f"Missing required field: {field}"}), 400
 
             # Call UserRepository.Authenticate method
             try:
-                user_data = UserRepository.Authenticate(
-                    data["username"], data["password"]
-                )
+                user_data = UserRepository.Authenticate(data["name"], data["password"])
             except Exception as db_error:
                 return jsonify({"error": f"Database error: {str(db_error)}"}), 500
 
@@ -106,7 +104,7 @@ def register_user_routes(app: Flask):
             # Handle any unexpected errors
             return jsonify({"error": f"Failed to login user: {str(e)}"}), 500
 
-    @app.route("/api/users/refresh", methods=["POST"])
+    @app.route("/users/refresh", methods=["POST"])
     def refresh_token():
         try:
             # Get JSON data from request
@@ -148,7 +146,7 @@ def register_user_routes(app: Flask):
         except Exception as e:
             return jsonify({"error": f"Failed to refresh token: {str(e)}"}), 500
 
-    @app.route("/api/users/me", methods=["GET"])
+    @app.route("/users/me", methods=["GET"])
     @token_required
     def get_current_user():
         try:
