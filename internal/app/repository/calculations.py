@@ -410,21 +410,6 @@ def compute_final_results_from_elements(a, e, i_deg, Omega_deg, omega_deg, M0_de
         }
 
 
-def main():
-    """Основная функция программы"""
-    # non-interactive main: run calculations with static observations
-    orbit_det = AdvancedCometOrbitDetermination()
-    observations = STATIC_OBSERVATIONS
-    try:
-        result = orbit_det.determine_orbit(observations)
-        final = calculate_orbital_elements_from_observations(observations, None)
-        # results are returned/available via `result` and `final` variables
-        return final
-    except Exception:
-        # fail silently in non-interactive mode
-        return None
-
-
 # Добавляем недостающие методы для совместимости
 def robust_initial_guess(self, observations):
     """Надежное начальное приближение"""
@@ -475,5 +460,30 @@ AdvancedCometOrbitDetermination.robust_initial_guess = robust_initial_guess
 AdvancedCometOrbitDetermination.ra_dec_to_vector = ra_dec_to_vector
 AdvancedCometOrbitDetermination.print_observations_table = print_observations_table
 
-if __name__ == "__main__":
-    main()
+
+def calculate_orbit_from_observations(observations_data):
+    try:
+        orbit_det = AdvancedCometOrbitDetermination()
+
+        # Convert observations to the expected format
+        formatted_observations = []
+        for obs in observations_data:
+            ra_deg, dec_deg, timestamp = obs
+            # Convert to radians if needed by the calculation functions
+            # (check what format your functions expect)
+            formatted_observations.append((ra_deg, dec_deg, timestamp))
+
+        # Calculate orbit using the existing methods
+        result = orbit_det.determine_orbit(formatted_observations)
+        final = calculate_orbital_elements_from_observations(
+            formatted_observations, None
+        )
+
+        # Combine results for comprehensive output
+        return {
+            "basic_orbit_result": result,
+            "final_orbital_elements": final,
+            "success": True,
+        }
+    except Exception as e:
+        return {"success": False, "error": str(e)}

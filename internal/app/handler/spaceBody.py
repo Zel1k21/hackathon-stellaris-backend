@@ -23,15 +23,13 @@ def register_space_body_routes(app: Flask):
             comet = None
             if hasattr(result, "get"):
                 comet = {
-                    "id": result.get("id"),
                     "name": result.get("name"),
                 }
             else:
                 # tuple/list-like: assume (id, name, is_visible)
                 try:
                     comet = {
-                        "id": result[0],
-                        "name": result[1],
+                        "name": result[0],
                     }
                 except Exception:
                     # fallback: return raw row
