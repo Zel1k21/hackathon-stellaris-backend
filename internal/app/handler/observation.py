@@ -119,7 +119,9 @@ def register_observation_route(app: Flask):
 
                 comets_data.append(comet_data)
 
-            return jsonify({"comets": comets_data, "total": len(comets_data)}), 200
+                comets_data.append(comet_data)
+
+            return jsonify(comets_data), 200
 
         except Exception as e:
             return jsonify({"error": f"Failed to get comets: {str(e)}"}), 500
