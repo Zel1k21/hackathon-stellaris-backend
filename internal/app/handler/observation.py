@@ -83,3 +83,43 @@ def register_observation_route(app: Flask):
 
         except Exception as e:
             return jsonify({"error": f"Failed to create observations: {str(e)}"}), 500
+
+    @app.route("/api/comets", methods=["GET"])
+    def get_comets_with_observations():
+        try:
+            # Получаем все космические тела
+            space_bodies = SpaceBodyRepository.GetAllSpaceBodies()
+
+            comets_data = []
+            for space_body in space_bodies:
+                # Получаем все наблюдения для этого космического тела
+                observations = ObservationRepository.GetObservationsBySpaceBody(
+                    space_body["id"]
+                )
+
+                # Формируем данные для ответа
+                comet_data = {
+                    "id": space_body["id"],
+                    "name": space_body["name"],
+                    "observations": [],
+                }
+
+                # Добавляем наблюдения
+                for obs in observations:
+                    comet_data["observations"].append(
+                        {
+                            "observation_time": obs["observation_time"].isoformat()
+                            if obs["observation_time"]
+                            else None,
+                            "declination": obs["declination"],
+                            "ascension": obs["ascension"],
+                            "photo_url": obs["photo_url"],
+                        }
+                    )
+
+                comets_data.append(comet_data)
+
+            return jsonify({"comets": comets_data, "total": len(comets_data)}), 200
+
+        except Exception as e:
+            return jsonify({"error": f"Failed to get comets: {str(e)}"}), 500
