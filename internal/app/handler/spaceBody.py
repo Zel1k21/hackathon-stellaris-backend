@@ -50,13 +50,10 @@ def register_space_body_routes(app: Flask):
                     if hasattr(row, "get"):
                         observations.append(
                             {
-                                "id": row.get("id"),
-                                "space_body_id": row.get("space_body_id"),
-                                "user_id": row.get("user_id"),
-                                "observation_time": row.get("observation_time"),
+                                "timestamp": row.get("observation_time"),
                                 "declination": row.get("declination"),
-                                "ascension": row.get("ascension"),
-                                "photo_url": row.get("photo_url"),
+                                "rightAscension": row.get("ascension"),
+                                "photo": row.get("photo_url"),
                             }
                         )
                     else:
@@ -64,13 +61,10 @@ def register_space_body_routes(app: Flask):
                         try:
                             observations.append(
                                 {
-                                    "id": row[0],
-                                    "space_body_id": row[1],
-                                    "user_id": row[2],
-                                    "observation_time": row[3],
+                                    "timestamp": row[3],
                                     "declination": row[4],
-                                    "ascension": row[5],
-                                    "photo_url": row[6] if len(row) > 6 else None,
+                                    "rightAscension": row[5],
+                                    "photo": row[6] if len(row) > 6 else None,
                                 }
                             )
                         except Exception:
