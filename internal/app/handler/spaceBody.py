@@ -9,7 +9,7 @@ def space_body_info(app: Flask):
         """Return full information about a comet (space body) by id.
 
         Response:
-          200 -> { "comet": { "id": int, "name": str, "is_visible": bool } }
+          200 -> { "comet": { "id": int, "name": str,} }
           404 -> { "error": "Comet not found" }
           500 -> { "error": "..." }
         """

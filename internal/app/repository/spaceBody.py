@@ -18,7 +18,7 @@ class SpaceBodyRepository:
     def GetSpaceBodyByID(body_id: int):
         conn = connection.cursor()
         conn.execute(
-            "select * from space_body where id = ?",
+            "select * from space_body where id = %s",
             (body_id),
         )
         result = conn.fetchone()
