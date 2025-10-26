@@ -19,7 +19,7 @@ def register_user_routes(app: Flask):
             if not data:
                 return jsonify({"error": "No JSON data provided"}), 400
 
-            required_fields = ["name", "password"]
+            required_fields = ["username", "password"]
             for field in required_fields:
                 if field not in data:
                     return jsonify({"error": f"Missing required field: {field}"}), 400
@@ -67,7 +67,9 @@ def register_user_routes(app: Flask):
 
             # Call UserRepository.Authenticate method
             try:
-                user_data = UserRepository.Authenticate(data["name"], data["password"])
+                user_data = UserRepository.Authenticate(
+                    data["username"], data["password"]
+                )
             except Exception as db_error:
                 return jsonify({"error": f"Database error: {str(db_error)}"}), 500
 
