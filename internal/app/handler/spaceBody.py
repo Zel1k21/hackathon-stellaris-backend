@@ -70,7 +70,7 @@ def register_space_body_routes(app: Flask):
                         except Exception:
                             observations.append(row)
 
-            return jsonify({comet, observations}), 200
+            return jsonify(comet, observations), 200
 
         except Exception as e:
             return jsonify({"error": f"Failed to get comet info: {str(e)}"}), 500
