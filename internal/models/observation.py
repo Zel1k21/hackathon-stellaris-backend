@@ -7,7 +7,7 @@ class Observation:
     id: int
     space_body_id: int
     user_id: int
-    observation_time: datetime
+    observation_time: datetime.datetime
     declination: float
     ascension: float
     photo_url: str
