@@ -8,7 +8,7 @@ import datetime
 
 
 def register_observation_route(app: Flask):
-    @app.route("/api/comets/create", methods=["POST"])
+    @app.route("/api/comets", methods=["POST"])
     @token_required
     def create_observation():
         data = request.get_json()
