@@ -104,7 +104,7 @@ def register_observation_route(app: Flask):
                     "observations": [],
                 }
 
-                # Добавляем наблюдения
+                # Добавляем наблюдения в том же формате, что и в spaceBody.py
                 for obs in observations:
                     comet_data["observations"].append(
                         {
