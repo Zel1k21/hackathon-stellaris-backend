@@ -1,12 +1,9 @@
 import os
 from flask import Flask
-from internal.api.database import get_db_connection
+from dotenv import load_dotenv
 from internal.app.handler.handler import register_routes
 
-
-def get_db():
-    """Get database connection for repository use"""
-    return get_db_connection()
+load_dotenv("deploy/.env")
 
 
 def run():
