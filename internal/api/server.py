@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from internal.api.database import get_db_connection
 from internal.app.handler.user import register_user_routes
@@ -16,8 +17,9 @@ def run():
     register_user_routes(app)
 
     # Start the Flask development server
-    print("Starting Flask server on http://localhost:5000")
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = os.getenv("API_PORT")
+    print(f"Starting Flask server on http://localhost:{port}")
+    app.run(host="0.0.0.0", port=port, debug=True)
 
 
 if __name__ == "__main__":
