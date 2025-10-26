@@ -32,3 +32,14 @@ class ObservationRepository:
         result = conn.fetchone()
         conn.commit()
         return result
+
+    def GetObservationsBySpaceBodyID(space_body_id: int):
+        """Return all observations for a given space body id."""
+        conn = connection.cursor()
+        conn.execute(
+            "select * from observation where space_body_id = ?",
+            (space_body_id,),
+        )
+        results = conn.fetchall()
+        conn.commit()
+        return results
