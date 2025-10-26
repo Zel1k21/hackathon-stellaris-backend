@@ -9,7 +9,7 @@ def register_space_body_routes(app: Flask):
         """Return full information about a comet (space body) by id.
 
         Response:
-          200 -> { "comet": { "id": int, "name": str,} }
+          200 -> { "id": int, "name": str, "observations": [...] }
           404 -> { "error": "Comet not found" }
           500 -> { "error": "..." }
         """
@@ -19,28 +19,24 @@ def register_space_body_routes(app: Flask):
             if not result:
                 return jsonify({"error": "Comet not found"}), 404
 
-            # result may be a mapping (dict-like) or a tuple. Handle both.
-            comet = None
+            # Extract comet info
+            comet_id = None
+            comet_name = None
             if hasattr(result, "get"):
-                comet = {
-                    "id": result.get("id"),
-                    "name": result.get("name"),
-                }
+                comet_id = result.get("id")
+                comet_name = result.get("name")
             else:
                 # tuple/list-like: assume (id, name, is_visible)
                 try:
-                    comet = {
-                        "id": result[0],
-                        "name": result[1],
-                    }
+                    comet_id = result[0]
+                    comet_name = result[1]
                 except Exception:
                     # fallback: return raw row
-                    return jsonify({"comet": result, "observations": []}), 200
+                    return jsonify({"error": "Invalid comet data format"}), 500
 
             # Fetch related observations for this comet (space body)
             try:
                 obs_rows = ObservationRepository.GetObservationsBySpaceBody(body_id)
-
             except Exception:
                 obs_rows = None
 
@@ -68,9 +64,13 @@ def register_space_body_routes(app: Flask):
                                 }
                             )
                         except Exception:
-                            observations.append(row)
+                            # If we can't parse, skip this observation
+                            continue
 
-            return jsonify(comet, observations), 200
+            # Return in the required format
+            return jsonify(
+                {"id": comet_id, "name": comet_name, "observations": observations}
+            ), 200
 
         except Exception as e:
             return jsonify({"error": f"Failed to get comet info: {str(e)}"}), 500
