@@ -108,12 +108,12 @@ def register_observation_route(app: Flask):
                 for obs in observations:
                     comet_data["observations"].append(
                         {
-                            "observation_time": obs["observation_time"].isoformat()
+                            "timestamp": obs["observation_time"].isoformat()
                             if obs["observation_time"]
                             else None,
                             "declination": obs["declination"],
-                            "ascension": obs["ascension"],
-                            "photo_url": obs["photo_url"],
+                            "rightAscension": obs["ascension"],
+                            "photo": obs["photo_url"],
                         }
                     )
 
