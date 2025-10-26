@@ -5,6 +5,4 @@ from internal.app.handler.spaceBody import space_body_info
 
 def register_routes(app: Flask):
     register_user_routes(app)
-
-def watch_spaceBody(app: Flask):
     space_body_info(app)
